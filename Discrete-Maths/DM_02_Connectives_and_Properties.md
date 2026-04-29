@@ -49,17 +49,150 @@ These three are the foundation — every other logical operation can be built fr
 
 ### Secondary Operators (Derived)
 
-These are derived from the primary three and appear heavily in GATE.
+These 5 operators are built from the primary three. Each one has a specific truth table and a specific meaning you must know cold for GATE.
 
-| Symbol | Name | Built From |
-|--------|------|-----------|
-| ↑ | NAND | NOT(AND) |
-| ↓ | NOR | NOT(OR) |
-| ⊕ | XOR (Exclusive OR) | (p ∨ q) ∧ ¬(p ∧ q) |
-| → | Implication (If-Then) | ¬p ∨ q |
-| ↔ | Biconditional (If and only if) | (p → q) ∧ (q → p) |
+---
 
-> **Why this matters for GATE:** NAND and NOR are **functionally complete** — any logical expression can be built using only NAND gates or only NOR gates. This appears frequently in Digital Logic too.
+#### ↑ NAND (Not AND)
+
+```
+p ↑ q  ≡  ¬(p ∧ q)
+```
+
+Truth table:
+
+| p | q | p ∧ q | p ↑ q |
+|---|---|-------|-------|
+| F | F | F | **T** |
+| F | T | F | **T** |
+| T | F | F | **T** |
+| T | T | T | **F** ← only false when both true |
+
+> **Key insight:** NAND is the exact opposite of AND. AND is only true when both are true. NAND is only false when both are true.
+
+> **Functionally complete:** You can build ANY logical circuit using only NAND gates. This is why CPUs are built from NAND gates — one gate type does everything.
+
+---
+
+#### ↓ NOR (Not OR)
+
+```
+p ↓ q  ≡  ¬(p ∨ q)
+```
+
+Truth table:
+
+| p | q | p ∨ q | p ↓ q |
+|---|---|-------|-------|
+| F | F | F | **T** ← only true when both false |
+| F | T | T | **F** |
+| T | F | T | **F** |
+| T | T | T | **F** |
+
+> **Key insight:** NOR is the exact opposite of OR. OR is only false when both are false. NOR is only true when both are false.
+
+> **Also functionally complete:** NOR alone can build any circuit too.
+
+> **GATE trap:** NAND and NOR are both functionally complete. AND, OR, and NOT individually are NOT functionally complete — you need combinations. {AND, NOT} is complete. {OR, NOT} is complete. But AND alone, OR alone, NOT alone — none are.
+
+---
+
+#### ⊕ XOR (Exclusive OR)
+
+```
+p ⊕ q  ≡  (p ∨ q) ∧ ¬(p ∧ q)
+         ≡  (p ∧ ¬q) ∨ (¬p ∧ q)
+```
+
+Truth table:
+
+| p | q | p ⊕ q |
+|---|---|-------|
+| F | F | **F** |
+| F | T | **T** |
+| T | F | **T** |
+| T | T | **F** ← false when both same |
+
+> **Plain English:** XOR is true when the two inputs are **different**. False when they are the **same**.
+
+> **Memory trick:** "Exclusive OR" — only one of them can be true, not both.
+
+> **GATE uses:** XOR appears in addition circuits, parity checks, and many simplification problems. Key property: `p ⊕ p = 0` (false) and `p ⊕ 0 = p`.
+
+---
+
+#### → Implication (If-Then)
+
+```
+p → q  ≡  ¬p ∨ q
+```
+
+Read as: "If p then q" or "p implies q"
+
+Truth table:
+
+| p | q | p → q |
+|---|---|-------|
+| F | F | **T** |
+| F | T | **T** |
+| T | F | **F** ← only false here |
+| T | T | **T** |
+
+> **The hardest one to understand intuitively.** Why is "If p then q" true when p is false?
+
+> **Think of it as a promise:** "If it rains, I will carry an umbrella." This promise is only BROKEN (false) when it rains (p=T) but you don't carry an umbrella (q=F). If it doesn't rain at all (p=F), the promise is never broken — you can't be accused of lying regardless of whether you carry an umbrella or not.
+
+> **Critical GATE equivalence:** `p → q ≡ ¬p ∨ q`  
+> This is how every implication gets simplified. Anytime you see an arrow in a GATE question, immediately convert it: flip p to ¬p, change → to ∨.
+
+> **Example:** "If it rains, I carry an umbrella" = "It is not raining OR I carry an umbrella" — logically identical.
+
+---
+
+#### ↔ Biconditional (If and only if)
+
+```
+p ↔ q  ≡  (p → q) ∧ (q → p)
+         ≡  (¬p ∨ q) ∧ (¬q ∨ p)
+         ≡  (p ∧ q) ∨ (¬p ∧ ¬q)
+```
+
+Read as: "p if and only if q" (written as "p iff q")
+
+Truth table:
+
+| p | q | p ↔ q |
+|---|---|-------|
+| F | F | **T** |
+| F | T | **F** |
+| T | F | **F** |
+| T | T | **T** |
+
+> **Plain English:** Biconditional is true when both are the **same** (both T or both F). False when they are **different**.
+
+> **Notice:** XOR and Biconditional are exact opposites of each other.  
+> `p ↔ q ≡ ¬(p ⊕ q)` — this is a useful GATE identity.
+
+> **Real life example:** "You pass the exam if and only if you score above 50%."  
+> True when: you score above 50 AND you pass. Or you score ≤ 50 AND you fail.  
+> False when: you score above 50 but fail (unfair!). Or score ≤ 50 but pass (also unfair!).
+
+---
+
+#### Secondary Operators — Summary Table
+
+| Operator | Symbol | True when | False when |
+|----------|--------|-----------|------------|
+| NAND | ↑ | At least one is False | Both are True |
+| NOR | ↓ | Both are False | At least one is True |
+| XOR | ⊕ | Inputs are **different** | Inputs are **same** |
+| Implication | → | p is False OR q is True | p is True AND q is False |
+| Biconditional | ↔ | Inputs are **same** | Inputs are **different** |
+
+> **Quick opposites to remember:**  
+> AND ↔ NAND (flip AND)  
+> OR ↔ NOR (flip OR)  
+> XOR ↔ Biconditional (they are negations of each other)
 
 ---
 
@@ -555,13 +688,89 @@ This is **Absorption Law** in Boolean notation:
 
 ## 12. Common GATE Traps
 
-| Trap | Correct understanding |
-|------|----------------------|
-| Thinking De Morgan's only works for 2 variables | Works for any number: ¬(p∧q∧r) = ¬p∨¬q∨¬r |
-| Confusing AND identity (T) with OR identity (F) | AND + T = itself. OR + F = itself. Opposite of what feels natural. |
-| Thinking distributive only works one way | BOTH AND over OR and OR over AND work |
-| Mixing up Idempotent and Identity | Idempotent: same variable twice (p∧p=p). Identity: variable + constant (p∧T=p) |
-| Forgetting implication ≡ ¬p ∨ q | This comes up constantly in GATE questions |
+**Trap 1 — De Morgan's only for 2 variables**
+
+Wrong thinking: De Morgan's applies only to `¬(p ∧ q)`.
+
+Correct: Works for any number of variables. Just push NOT inside and flip every operator.
+
+```
+¬(p ∧ q ∧ r)   =   ¬p ∨ ¬q ∨ ¬r
+¬(p ∨ q ∨ r)   =   ¬p ∧ ¬q ∧ ¬r
+```
+
+---
+
+**Trap 2 — Confusing AND identity vs OR identity**
+
+AND identity = **True** → `p ∧ T = p`  
+OR identity = **False** → `p ∨ F = p`
+
+Why does this feel backwards? Because you're used to arithmetic where + is the "simpler" operation and × is "bigger." In logic, AND behaves like multiplication (×) and OR behaves like addition (+).
+
+```
+Arithmetic:   n × 1 = n   →   AND: p ∧ T = p     (T is the 1 of AND)
+Arithmetic:   n + 0 = n   →   OR:  p ∨ F = p     (F is the 0 of OR)
+```
+
+Once you see AND=× and OR=+, the identities are exactly what you already know.
+
+---
+
+**Trap 3 — Distributive only works one way**
+
+Both directions work in logic — unlike arithmetic where only × distributes over +:
+
+```
+AND over OR:   p ∧ (q ∨ r)  =  (p ∧ q) ∨ (p ∧ r)   ✓
+OR over AND:   p ∨ (q ∧ r)  =  (p ∨ q) ∧ (p ∨ r)   ✓ (this one has no arithmetic equivalent)
+```
+
+---
+
+**Trap 4 — Forgetting implication ≡ ¬p ∨ q**
+
+This is the single most-used equivalence in GATE Discrete Math questions. Any time you see → in a simplification problem, your first move is to rewrite it.
+
+```
+p → q   becomes   ¬p ∨ q
+```
+
+The pattern: **flip the left side (NOT it), change arrow to OR, right side stays.**
+
+Multi-step example:
+```
+(p → q) → r
+= (¬p ∨ q) → r          ← convert inner implication
+= ¬(¬p ∨ q) ∨ r         ← convert outer implication
+= (p ∧ ¬q) ∨ r          ← De Morgan's on ¬(¬p ∨ q)
+```
+
+---
+
+**Trap 5 — XOR vs Biconditional**
+
+```
+XOR (⊕):           TRUE when inputs are DIFFERENT
+Biconditional (↔):  TRUE when inputs are SAME
+```
+
+They are exact opposites: `p ↔ q ≡ ¬(p ⊕ q)`
+
+Easy check: look at the T,T row. XOR gives F (same = false for XOR). Biconditional gives T (same = true for bicon).
+
+---
+
+**Trap 6 — Treating implication as symmetric**
+
+`p → q` and `q → p` are completely different statements.
+
+```
+"If it rains, I carry an umbrella"   (p → q)
+"If I carry an umbrella, it rains"   (q → p)   ← clearly not the same
+```
+
+Direction matters. This is why the biconditional (p ↔ q) exists — it means BOTH directions hold simultaneously.
 
 ---
 
@@ -571,5 +780,3 @@ This is **Absorption Law** in Boolean notation:
 **Then:** Logical equivalence and how to prove two expressions are equal without truth tables (using the 10 laws above)
 
 ---
-
-*Notes maintained on GitHub · DM_02_Connectives_and_Properties.md · Divy Deshmukh · GATE 2027*
