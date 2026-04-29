@@ -1,6 +1,5 @@
 # Discrete Mathematics — Chapter 2: Logical Connectives & Properties of Operators
 
-> **Source:** Amit Khurana — DM for GATE  
 > **Topic:** Logical Operators / Connectives + Properties of Basic Operators  
 > **Prerequisite:** DM_01_Propositions.md  
 > **Last Updated:** April 2026
