@@ -1,6 +1,5 @@
 # Discrete Mathematics — Chapter 1: Propositions (Logical Statements)
 
-> **Source:** Amit Khurana — DM for GATE  
 > **Subject:** Discrete Mathematics  
 > **Topic:** Propositional Logic — Lecture 1  
 > **Last Updated:** April 2026
