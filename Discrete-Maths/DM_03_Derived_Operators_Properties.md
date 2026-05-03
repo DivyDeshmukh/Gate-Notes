@@ -49,18 +49,23 @@
 ⊕ checks **differences** between two values.
 ⊙ checks **similarities** between two values.
 
-When you negate one input, differences become similarities and vice versa:
+Two rules govern negation with XOR and XNOR:
 
+**Rule 1 — Negate ONE side → switches the operator**
 ```
-¬p ⊕  q  =  p ⊙ q
- p ⊕ ¬q  =  p ⊙ q
-¬p ⊙  q  =  p ⊕ q
- p ⊙ ¬q  =  p ⊕ q
-¬p ⊕ ¬q  =  p ⊙ q    ← negating BOTH keeps similarity
-¬p ⊙ ¬q  =  p ⊙ q    ← negating BOTH keeps similarity
+¬p ⊕  q  =  p ⊙ q    ← XOR becomes XNOR
+ p ⊕ ¬q  =  p ⊙ q    ← XOR becomes XNOR
+¬p ⊙  q  =  p ⊕ q    ← XNOR becomes XOR
+ p ⊙ ¬q  =  p ⊕ q    ← XNOR becomes XOR
 ```
 
-**Intuition:** If you flip one side, you flip whether you're checking differences or similarities. If you flip both sides, the comparison stays the same.
+**Rule 2 — Negate BOTH sides → operator stays the same**
+```
+¬p ⊕ ¬q  =  p ⊕ q    ← XOR stays XOR  (NOT p ⊙ q)
+¬p ⊙ ¬q  =  p ⊙ q    ← XNOR stays XNOR
+```
+
+> **Intuition:** Negating one side flips which values are "different" vs "same" — so XOR and XNOR swap. Negating BOTH sides is like flipping both sides of a comparison equally — differences are still differences, similarities are still similarities — so the operator stays the same.
 
 **Proof for ¬p ⊕ q = p ⊙ q using truth table:**
 
